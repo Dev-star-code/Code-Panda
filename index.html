@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Created by Code Panda -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Panda</title>
+    <link rel="shortcut icon" href="code panda logo.png" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Poppins:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary: #0f172a;
+            --secondary: #1e293b;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+        }
+
+        .product-card {
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 20px 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .glow-border {
+            position: relative;
+        }
+
+        .glow-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 0.5rem;
+            padding: 2px;
+            background: linear-gradient(45deg, var(--accent), #8b5cf6);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% {
+                transform: translate(0, 0px);
+            }
+
+            50% {
+                transform: translate(0, 15px);
+            }
+
+            100% {
+                transform: translate(0, -0px);
+            }
+        }
+
+        .tilt {
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease;
+        }
+
+        .tilt:hover {
+            transform: rotateY(10deg) rotateX(10deg);
+        }
+
+        .card-flip {
+            perspective: 1000px;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+
+        .card-flip:hover .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front,
+        .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 1rem;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        .fade-slide-up {
+            animation: fadeSlideUp 1s ease-out both;
+        }
+
+        @keyframes fadeSlideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transition: opacity 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+        }
+
+        .map-pin {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .social-icon {
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-5px) scale(1.1);
+            color: var(--accent);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        /* 3D Card Effect */
+        .card-3d {
+            transform-style: preserve-3d;
+            transition: all 0.5s ease;
+        }
+
+        .card-3d:hover {
+            transform: rotateY(10deg) rotateX(5deg) translateY(-10px);
+        }
+
+        /* Gradient Text */
+        .gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hero-content {
+                padding-top: 6rem;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(1, minmax(0, 1fr));
+            }
+
+            .timeline-item {
+                flex-direction: column;
+            }
+
+            .timeline-line {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+    <!-- Floating Transparent Header -->
+    <nav
+        class="fixed top-4 left-1/2 transform -translate-x-1/2 w-[95%] z-50 bg-white/10 backdrop-blur-lg shadow-xl rounded-xl transition-all duration-500 ease-in-out hover:scale-[1.01] border border-white/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <span class="text-2xl font-bold text-white font-orbitron">
+                            <span class="text-accent">Code</span> Panda
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#home"
+                            class="text-white hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">Home</a>
+                        <a href="#about"
+                            class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">About</a>
+                        <a href="#products"
+                            class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">Products</a>
+                        <a href="#contact"
+                            class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">Contact</a>
+                        <button
+                            class="ml-4 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-md text-sm font-medium hover:opacity-90 transition-opacity duration-300">
+                            Subscribe +
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button class="text-gray-300 hover:text-white focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Body padding to avoid header overlap -->
+    <div class="pt-6">
+        <!-- Main content starts here -->
+    </div>
+
+    <div class="pt-20">
+        <!-- Main content goes here -->
+    </div>
+    <!-- Hero Section -->
+    <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-black to-gray-900 opacity-90"></div>
+            <div
+                class="absolute top-0 left-0 w-full h-full bg-[url('https://images.unsplash.com/photo-1639762681057-408e52192e55?q=80&w=2232&auto=format&fit=crop')] bg-cover bg-center opacity-20">
+            </div>
+
+            <!-- Floating elements -->
+            <div class="absolute top-1/4 left-1/4 w-16 h-16 rounded-full bg-blue-500 opacity-20 blur-xl floating"
+                style="animation-delay: 0s;"></div>
+            <div class="absolute top-1/3 right-1/4 w-24 h-24 rounded-full bg-purple-500 opacity-20 blur-xl floating"
+                style="animation-delay: 1s;"></div>
+            <div class="absolute bottom-1/4 left-1/3 w-20 h-20 rounded-full bg-blue-400 opacity-20 blur-xl floating"
+                style="animation-delay: 2s;"></div>
+
+            <!-- 3D floating product mockups -->
+            <div class="absolute top-1/3 right-1/4 transform rotate-12 floating" style="animation-delay: 0.5s;">
+                <div
+                    class="w-32 h-32 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl shadow-2xl transform rotate-12">
+                </div>
+            </div>
+            <div class="absolute bottom-1/3 left-1/4 transform -rotate-6 floating" style="animation-delay: 1.5s;">
+                <div
+                    class="w-28 h-28 bg-gradient-to-br from-purple-500 to-blue-600 rounded-xl shadow-2xl transform rotate-6">
+                </div>
+            </div>
+        </div>
+        <div class="relative z-10 text-center px-5 sm:px-6 lg:px-8 hero-content pt-100">
+            <h1 class="text-2xl md:text-6xl font-bold mb-5 font-orbitron tracking-wide fade-slide-up">
+                <span class="gradient-text bg-gradient-to-r from-blue-400 to-purple-500">Welcome to</span> Code Panda
+                your creative
+                <span class="gradient-text bg-gradient-to-r from-blue-400 to-purple-500">digital </span>partner
+            </h1>
+
+            <p class="text-base md:text-lg text-gray-200 max-w-3xl mx-auto mb-6 tracking-wide fade-slide-up"
+                style="animation-delay: 0.5s;">
+                We specialize in designing stunning websites, logos, eBooks, YouTube thumbnails, and custom designs
+                that make your brand stand out. Let us help you bring your ideas to life with high-quality,
+                impactful designs.
+            </p>
+
+            <div class="flex flex-col sm:flex-row justify-center gap-4 fade-slide-up" style="animation-delay: 1s;">
+                <button
+                    class="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg text-lg font-medium hover:opacity-90 transition-opacity duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                    Explore Products
+                </button>
+                <button
+                    class="px-8 py-4 border border-gray-600 text-white rounded-lg text-lg font-medium hover:bg-gray-800 transition-colors duration-300">
+                    Learn More
+                </button>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 left-0 right-0 flex justify-center">
+            <a href="#about" class="text-gray-400 hover:text-white animate-bounce">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- About Section - Enhanced -->
+
+
+
+    <!-- Foreground Content -->
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white">
+
+        <!-- About Heading -->
+
+        </head>
+
+        <body class="min-h-screen">
+            <!-- Floating Transparent Header -->
+            <nav
+                class="fixed top-4 left-1/2 transform -translate-x-1/2 w-[95%] z-50 bg-white/10 backdrop-blur-lg shadow-xl rounded-xl transition-all duration-500 ease-in-out hover:scale-[1.01] border border-white/20">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex items-center justify-between h-16">
+                        <!-- Logo -->
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <span class="text-2xl font-bold text-white font-orbitron">
+                                    <span class="text-accent">Code</span> Panda
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Desktop Navigation -->
+                        <div class="hidden md:block">
+                            <div class="ml-10 flex items-baseline space-x-8">
+                                <a href="#home"
+                                    class="text-white hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">Home</a>
+                                <a href="#about"
+                                    class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">About</a>
+                                <a href="#products"
+                                    class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">Products</a>
+                                <a href="#contact"
+                                    class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">Contact</a>
+                                <button
+                                    class="ml-4 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-md text-sm font-medium hover:opacity-90 transition-opacity duration-300">
+                                    Subscribe +
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Mobile Menu Button -->
+                        <div class="md:hidden">
+                            <button class="text-gray-300 hover:text-white focus:outline-none">
+                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 6h16M4 12h16M4 18h16" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Body padding to avoid header overlap -->
+            <div class="pt-6">
+                <!-- Main content starts here -->
+            </div>
+
+            <div class="pt-20">
+                <!-- Main content goes here -->
+            </div>
+            <!-- Hero Section -->
+            <section id="about" class="py-20 relative overflow-hidden min-h-screen">
+                <!-- Background Layers -->
+                <div class="absolute inset-0 z-0 pointer-events-none">
+                    <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-gray-900 to-black opacity-90">
+                    </div>
+                    <div
+                        class="absolute top-0 left-0 w-full h-full bg-[url('https://images.unsplash.com/photo-1639762681057-408e52192e55?q=80&w=2232&auto=format&fit=crop')] bg-cover bg-center opacity-10">
+                    </div>
+                </div>
+
+                <!-- Foreground Content -->
+                <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white">
+                    <!-- About Heading -->
+                    <div class="text-center mb-16">
+                        <h2 class="text-3xl md:text-5xl font-bold mb-4 font-orbitron">
+                            <span
+                                class="bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">About</span>
+                            Code Panda
+                        </h2>
+                        <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                            I specialize in creating custom websites, logos, e-books, YouTube thumbnails,
+                            and unique designs. Check out my YouTube channel @codepanda_code for helpful
+                            tutorials and design tips. Let’s bring your ideas to life!
+                    </div>
+
+                    <!-- Vision, Mission, Values -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+                        <div class="bg-white/5 backdrop-blur p-8 rounded-xl">
+                            <div
+                                class="w-16 h-16 bg-blue-500 bg-opacity-20 rounded-full flex items-center justify-center mb-6">
+                                <i class="fas fa-lightbulb text-2xl text-blue-400"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-4 font-orbitron">Our Vision</h3>
+                            <p class="text-gray-300">
+                                To empower creators and businesses by providing top-quality digital products
+                                and services that help them succeed online, while offering valuable design
+                                insights through engaging tutorials.
+                            </p>
+                        </div>
+
+                        <div class="bg-white/5 backdrop-blur p-8 rounded-xl">
+                            <div
+                                class="w-16 h-16 bg-purple-500 bg-opacity-20 rounded-full flex items-center justify-center mb-6">
+                                <i class="fas fa-bullseye text-2xl text-purple-400"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-4 font-orbitron">Our Mission</h3>
+                            <p class="text-gray-300">
+                                To deliver innovative, custom-designed websites, logos, e-books, thumbnails,
+                                and more, while educating and inspiring my audience through my YouTube
+                                channel to enhance their online presence and creativity.
+                            </p>
+                        </div>
+
+                        <div class="bg-white/5 backdrop-blur p-8 rounded-xl">
+                            <div
+                                class="w-16 h-16 bg-indigo-500 bg-opacity-20 rounded-full flex items-center justify-center mb-6">
+                                <i class="fas fa-star text-2xl text-indigo-400"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-4 font-orbitron">Our Values</h3>
+                            <p class="text-gray-300">
+                                Creativity,
+                                Quality,
+                                Education,
+                                Collaboration,
+                                Customer Satisfaction.
+
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Timeline -->
+                    <div class="mb-16">
+                        <h3 class="text-2xl font-bold mb-8 text-center font-orbitron">Our Journey</h3>
+                        <div class="relative">
+                            <div
+                                class="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-purple-600 transform -translate-x-1/2">
+                            </div>
+
+                            <div class="space-y-16">
+                                <div class="flex flex-col md:flex-row items-center relative">
+                                    <div class="w-full md:w-1/2 p-6 md:pr-12">
+                                        <div class="bg-white/5 backdrop-blur p-6 rounded-xl">
+                                            <div class="flex items-center mb-4">
+                                                <div
+                                                    class="w-12 h-12 bg-blue-500 bg-opacity-20 rounded-full flex items-center justify-center mr-4">
+                                                    <i class="fas fa-rocket text-blue-400"></i>
+                                                </div>
+                                                <h4 class="text-lg font-bold font-orbitron"> The Beginning
+                                                </h4>
+                                            </div>
+                                            <p class="text-gray-300">
+                                                Share how CodePanda started – from the idea behind the name
+                                                to the first steps in building the business. This is where
+                                                you can highlight your passion for design, coding, and
+                                                helping others.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="hidden md:block w-1/2"></div>
+                                </div>
+
+                                <div class="flex flex-col md:flex-row items-center relative">
+                                    <div class="hidden md:block w-1/2"></div>
+                                    <div class="w-full md:w-1/2 p-6 md:pl-12">
+                                        <div class="bg-white/5 backdrop-blur p-6 rounded-xl">
+                                            <div class="flex items-center mb-4">
+                                                <div
+                                                    class="w-12 h-12 bg-purple-500 bg-opacity-20 rounded-full flex items-center justify-center mr-4">
+                                                    <i class="fas fa-users text-purple-400"></i>
+                                                </div>
+                                                <h4 class="text-lg font-bold font-orbitron">Growth and
+                                                    Learning</h4>
+                                            </div>
+                                            <p class="text-gray-300">
+                                                Talk about the progress you've made and the lessons you've
+                                                learned along the way. Mention the development of your
+                                                skills, the expansion of your services (like websites,
+                                                logos, e-books), and your journey into creating educational
+                                                content for your YouTube channel.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col md:flex-row items-center relative">
+                                    <div class="w-full md:w-1/2 p-6 md:pr-12">
+                                        <div class="bg-white/5 backdrop-blur p-6 rounded-xl">
+                                            <div class="flex items-center mb-4">
+                                                <div
+                                                    class="w-12 h-12 bg-indigo-500 bg-opacity-20 rounded-full flex items-center justify-center mr-4">
+                                                    <i class="fas fa-trophy text-indigo-400"></i>
+                                                </div>
+                                                <h4 class="text-lg font-bold font-orbitron">Our Services and
+                                                    Expertise
+                                                </h4>
+                                            </div>
+                                            <p class="text-gray-300">
+                                                Highlight the services you offer now, showing the breadth
+                                                and depth of your expertise. Talk about your commitment to
+                                                delivering top-notch websites, logos, thumbnails, e-books,
+                                                and designs for a variety of clients.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="hidden md:block w-1/2"></div>
+                                </div>
+
+                                <div class="flex flex-col md:flex-row items-center relative">
+                                    <div class="hidden md:block w-1/2"></div>
+                                    <div class="w-full md:w-1/2 p-6 md:pl-12">
+                                        <div class="bg-white/5 backdrop-blur p-6 rounded-xl">
+                                            <div class="flex items-center mb-4">
+                                                <div
+                                                    class="w-12 h-12 bg-blue-500 bg-opacity-20 rounded-full flex items-center justify-center mr-4">
+                                                    <i class="fas fa-globe text-blue-400"></i>
+                                                </div>
+                                                <h4 class="text-lg font-bold font-orbitron">The Future
+                                                </h4>
+                                            </div>
+                                            <p class="text-gray-300">
+                                                Share your vision for the future of CodePanda – plans for
+                                                new services, content, or expanding your community. This
+                                                section shows your growth mindset and excitement for what’s
+                                                to come.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Team Section -->
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold mb-4 font-orbitron">Meet The Team</h3>
+                        <p class="text-gray-300 max-w-3xl mx-auto">
+                            Behind CodePanda is a small but passionate team dedicated to turning ideas into digital
+                            magic. From clean code to creative designs, we bring a mix of tech skills and artistic flair
+                            to every project.
+                        </p>
+                    </div>
+                    <section class="py-12 bg-gray-900 text-white">
+                        <div class="max-w-7xl mx-auto px-4 text-center">
+                            <h2 class="text-3xl font-bold mb-8">Meet the CodePanda Team </h2>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                                <!-- Founder -->
+                                <div class="bg-white/5 backdrop-blur p-6 rounded-xl text-center">
+                                    <img src="avatar.jpg" alt="Founder & Lead Designer"
+                                        class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+                                    <p class="text-blue-400 text-sm mb-2">👨‍💻 Founder & Lead Designer</p>
+                                    <p class="text-gray-300 text-sm">
+                                        The creative mind behind CodePanda, handling everything from web development to
+                                        YouTube tutorials with a focus on quality and creativity.
+                                    </p>
+                                </div>
+
+                                <!-- Graphic Designer -->
+                                <div class="bg-white/5 backdrop-blur p-6 rounded-xl text-center">
+                                    <img src="boy3.jpg" alt="Graphic Designer"
+                                        class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+                                    <p class="text-purple-400 text-sm mb-2">🎨 Graphic Designer</p>
+                                    <p class="text-gray-300 text-sm">
+                                        Specializes in crafting stunning logos, thumbnails, e-book covers, and social
+                                        media graphics that make your brand pop.
+                                    </p>
+                                </div>
+
+                                <!-- Content Creator -->
+                                <div class="bg-white/5 backdrop-blur p-6 rounded-xl text-center">
+                                    <img src="boy.jpg" alt="Content Creator"
+                                        class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+                                    <p class="text-indigo-400 text-sm mb-2">📚 Content Creator</p>
+                                    <p class="text-gray-300 text-sm">
+                                        Works on e-book formatting, storytelling layouts, and design-friendly content
+                                        for clients and the YouTube community.
+                                    </p>
+                                </div>
+
+                                <!-- Marketing & Support -->
+                                <div class="bg-white/5 backdrop-blur p-6 rounded-xl text-center">
+                                    <img src="boy4.jpg" alt="Marketing & Support"
+                                        class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+                                    <p class="text-cyan-400 text-sm mb-2">📢 Marketing & Support</p>
+                                    <p class="text-gray-300 text-sm">
+                                        Manages communication, promotions, and client support to keep everything running
+                                        smoothly and ensure you're always in good hands.
+                                    </p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </section>
+                    <!-- Products Section -->
+
+                    <section id="products" class="py-20 bg-gradient-to-b from-gray-900 to-black text-white">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                            <!-- Heading -->
+                            <div class="text-center mb-16">
+                                <h2 class="text-3xl md:text-5xl font-bold mb-4">
+                                    <span
+                                        class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Our</span>
+                                    Products
+                                </h2>
+                                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                                    We're excited to announce the latest update to our product line! New designs,
+                                    features, and
+                                    improvements are now available to enhance your experience. Check out our updated
+                                    collection today.
+                                </p>
+                            </div>
+
+                            <!-- CodePanda Description -->
+                            <div class="bg-gray-800 rounded-xl p-6 mb-12 shadow-lg text-center">
+                                <h3 class="text-2xl font-bold mb-4">About Our Channel</h3>
+                                <p class="text-gray-300 text-lg max-w-2xl mx-auto mb-4">
+                                    Welcome to <span class="text-blue-400 font-semibold">@codepanda_code</span> — your
+                                    go-to place on
+                                    YouTube for clean, practical, and creative front-end code tutorials. From CSS tricks
+                                    to full website
+                                    builds, we help you become a better developer one video at a time.
+                                </p>
+                                <p class="text-gray-400 text-sm">
+                                    If you want to buy any digital product (like logos, templates, or web designs), mail
+                                    us — our team
+                                    will get back to you shortly: <br>
+                                    <span class="text-blue-400">codepandacode@gmail.com</span>
+                                </p>
+                            </div>
+
+                            <!-- Filter Buttons -->
+                            <div class="flex flex-wrap justify-center gap-3 mb-12">
+                                <button class="px-6 py-3 text-sm font-medium rounded-full bg-blue-600 text-white">All
+                                    Categories</button>
+                                <button
+                                    class="px-6 py-3 text-sm font-medium rounded-full bg-gray-800 text-gray-300 hover:bg-gray-700">Logos</button>
+                                <button
+                                    class="px-6 py-3 text-sm font-medium rounded-full bg-gray-800 text-gray-300 hover:bg-gray-700">E-Books</button>
+                                <button
+                                    class="px-6 py-3 text-sm font-medium rounded-full bg-gray-800 text-gray-300 hover:bg-gray-700">Websites</button>
+                                <button
+                                    class="px-6 py-3 text-sm font-medium rounded-full bg-gray-800 text-gray-300 hover:bg-gray-700">YouTube
+                                    Thumbnails</button>
+                                <button
+                                    class="px-6 py-3 text-sm font-medium rounded-full bg-gray-800 text-gray-300 hover:bg-gray-700">Designs</button>
+                            </div>
+
+                            <!-- 3D Animated Product Cards -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+
+                                <!-- 3D Card 1 -->
+                                <div
+                                    class="tilt bg-gradient-to-br from-pink-500 to-yellow-500 p-1 rounded-2xl shadow-2xl hover:shadow-purple-600 transition duration-500">
+                                    <div class="bg-gray-900 rounded-2xl p-6 h-full flex flex-col justify-between">
+                                        <div class="text-center">
+                                            <i class="fas fa-palette text-6xl text-pink-400 mb-4 animate-bounce"></i>
+                                            <h3 class="text-xl font-bold mb-2">Logo,E-book,Youtube thumbnail,designs
+                                            </h3>
+                                            <p class="text-gray-400 text-sm">stunning designs are created with passion,
+                                                precision, and a
+                                                sprinkle of magic!</p>
+                                        </div>
+                                        <div class="text-center mt-6">
+                                            <p class="text-white text-sm">Email: developerdesigner63@gmail.com</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 3D Card 2 -->
+                                <div
+                                    class="tilt bg-gradient-to-br from-indigo-500 to-purple-600 p-1 rounded-2xl shadow-2xl hover:shadow-indigo-700 transition duration-500">
+                                    <div class="bg-gray-900 rounded-2xl p-6 h-full flex flex-col justify-between">
+                                        <div class="text-center">
+                                            <i
+                                                class="fas fa-layer-group text-6xl text-indigo-300 mb-4 animate-spin-slow"></i>
+                                            <h3 class="text-xl font-bold mb-2">Animated Websites</h3>
+                                            <p class="text-gray-400 text-sm">CAnimated websites are craaazily created to
+                                                move, groove,
+                                                and impress!.</p>
+                                        </div>
+                                        <div class="text-center mt-6">
+                                            <p class="text-white text-sm">Email: developerdesigner63@gmail.com</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 3D Card 3 -->
+                                <div
+                                    class="tilt bg-gradient-to-br from-green-400 to-blue-500 p-1 rounded-2xl shadow-2xl hover:shadow-green-600 transition duration-500">
+                                    <div class="bg-gray-900 rounded-2xl p-6 h-full flex flex-col justify-between">
+                                        <div class="text-center">
+                                            <i class="fas fa-rocket text-6xl text-green-300 mb-4 animate-pulse"></i>
+                                            <h3 class="text-xl font-bold mb-2">E-books,Designs</h3>
+                                            <p class="text-gray-400 text-sm">E-books, designs, and more are carefully
+                                                created to
+                                                inspire, engage, and impress</p>
+                                        </div>
+                                        <div class="text-center mt-6">
+                                            <p class="text-white text-sm">Email: developerdesigner63@gmail.com</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </section>
+
+
+                    < <!-- Contact Section - Enhanced -->
+                        <section id="contact" class="py-20 relative overflow-hidden">
+                            <div class="absolute inset-0 z-0">
+                                <!-- Background gradient -->
+                                <div
+                                    class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-black to-gray-900 opacity-90">
+                                </div>
+
+                            </div>
+                            <!-- Background image -->
+                            <div class="absolute top-0 left-0 w-full h-full bg-cover bg-center opacity-10"
+                                style="background-image: url('https://images.unsplash.com/photo-1639762681057-408e52192e55?q=80&w=2232&auto=format&fit=crop');">
+                            </div>
+
+                            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                                <div class="text-center mb-16">
+                                    <h2 class="text-3xl md:text-5xl font-bold mb-4 font-orbitron">
+                                        <span
+                                            class="bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">Get</span>
+                                        In Touch
+                                    </h2>
+                                    <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                                        Have questions or want to work together? Feel free to reach out — we're here to
+                                        help
+                                        and would love to hear from you!
+                                    </p>
+                                </div>
+
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                                    <!-- Left side: Contact Information -->
+                                    <div>
+                                        <div class="bg-gray-800 p-8 rounded-xl shadow-lg">
+                                            <h3 class="text-2xl font-bold mb-6 text-white">Contact Information</h3>
+                                            <p class="text-gray-300 mb-8">
+                                                Have a question or want to connect? Reach out anytime — we're here to
+                                                help
+                                                and will get back to you soon.
+                                            </p>
+
+                                            <div class="space-y-6">
+                                                <div class="flex items-start">
+                                                    <div class="flex-shrink-0">
+                                                        <div
+                                                            class="w-12 h-12 rounded-full bg-blue-500 bg-opacity-20 flex items-center justify-center">
+                                                            <i class="fas fa-map-marker-alt text-blue-400"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ml-4">
+                                                        <h4 class="text-lg font-semibold text-white">Location</h4>
+                                                        <p class="text-gray-400">Visit us online at
+                                                            www.youtube.com/@codepanda_code — we’re just a click away!
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="flex items-start">
+                                                    <div class="flex-shrink-0">
+                                                        <div
+                                                            class="w-12 h-12 rounded-full bg-purple-500 bg-opacity-20 flex items-center justify-center">
+                                                            <i class="fas fa-envelope text-purple-400"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ml-4">
+                                                        <h4 class="text-lg font-semibold text-white">Email Us</h4>
+                                                        <p class="text-gray-400">developerdesigner63@gmail.com</p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="flex items-start">
+                                                    <div class="flex-shrink-0">
+                                                        <div
+                                                            class="w-12 h-12 rounded-full bg-indigo-500 bg-opacity-20 flex items-center justify-center">
+                                                            <i class="fas fa-clock text-indigo-400"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ml-4">
+                                                        <h4 class="text-lg font-semibold text-white">Working Hours</h4>
+                                                        <p class="text-gray-400">Monday - Friday: 9:00 AM - 6:00 PM PST
+                                                        </p>
+                                                        <p class="text-gray-400">Weekends: Limited support available</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="mt-10">
+                                                <h4 class="text-lg font-semibold text-white mb-4">Follow Us</h4>
+                                                <div class="flex space-x-4">
+                                                    <a href="#"
+                                                        class="social-icon w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-xl hover:bg-blue-600">
+                                                        <i class="fab fa-facebook-f"></i>
+                                                    </a>
+                                                    <a href="#"
+                                                        class="social-icon w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-xl hover:bg-purple-600">
+                                                        <i class="fab fa-instagram"></i>
+                                                    </a>
+                                                    <a href="#"
+                                                        class="social-icon w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-xl hover:bg-blue-400">
+                                                        <i class="fab fa-twitter"></i>
+                                                    </a>
+                                                    <a href="#"
+                                                        class="social-icon w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-xl hover:bg-red-500">
+                                                        <i class="fab fa-youtube"></i>
+                                                    </a>
+                                                    <a href="#"
+                                                        class="social-icon w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-xl hover:bg-blue-500">
+                                                        <i class="fab fa-linkedin-in"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Right side: Contact Form -->
+                                    <div>
+                                        <div class="bg-gray-800 p-8 rounded-xl shadow-lg">
+                                            <h3 class="text-2xl font-bold mb-6 text-white">Send Us a Message</h3>
+                                            <form>
+                                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                                    <div>
+                                                        <label for="name"
+                                                            class="block text-sm font-medium text-gray-300 mb-2">Your
+                                                            Name
+                                                            *</label>
+                                                        <input type="text" id="name"
+                                                            class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white"
+                                                            placeholder="John Doe" required>
+                                                    </div>
+                                                    <div>
+                                                        <label for="email"
+                                                            class="block text-sm font-medium text-gray-300 mb-2">Email
+                                                            Address *</label>
+                                                        <input type="email" id="email"
+                                                            class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white"
+                                                            placeholder="john@example.com" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-6">
+                                                    <label for="subject"
+                                                        class="block text-sm font-medium text-gray-300 mb-2">Subject
+                                                        *</label>
+                                                    <select id="subject"
+                                                        class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white"
+                                                        required>
+                                                        <option value="">Select a subject</option>
+                                                        <option value="sales">Sales Inquiry</option>
+                                                        <option value="support">Technical Support</option>
+                                                        <option value="partnership">Partnership Opportunity</option>
+                                                        <option value="custom">Custom Design Request</option>
+                                                        <option value="other">Other</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="mb-6">
+                                                    <label for="message"
+                                                        class="block text-sm font-medium text-gray-300 mb-2">Your
+                                                        Message
+                                                        *</label>
+                                                    <textarea id="message" rows="4"
+                                                        class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white"
+                                                        placeholder="Tell us about your project..." required></textarea>
+                                                </div>
+
+                                                <div class="mb-6">
+                                                    <label class="flex items-center">
+                                                        <input type="checkbox"
+                                                            class="form-checkbox bg-gray-700 border-gray-600 rounded text-blue-500"
+                                                            required>
+                                                        <span class="ml-2 text-sm text-gray-300">I agree to the <a
+                                                                href="#" class="text-blue-400 hover:underline">privacy
+                                                                policy</a> and
+                                                            <a href="#" class="text-blue-400 hover:underline">terms of
+                                                                service</a></span>
+                                                    </label>
+                                                </div>
+
+                                                <button type="submit"
+                                                    class="w-full px-6 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg text-lg font-medium hover:opacity-90 transition-opacity duration-300 flex items-center justify-center">
+                                                    <i class="fas fa-paper-plane mr-2"></i> Send Message
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Footer -->
+                        <footer class="bg-black bg-opacity-80 py-12 border-t border-gray-800">
+                            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                                    <div>
+                                        <h3 class="text-xl font-bold text-white mb-4 font-orbitron">
+                                            <span class="text-accent">Code</span> Panda
+                                        </h3>
+                                        <p class="text-gray-400 mb-4">
+                                            Premium digital assets for creators and businesses. Elevate your brand with
+                                            our high-quality
+                                            products.
+                                        </p>
+                                        <div class="flex space-x-4">
+                                            <a href="#"
+                                                class="social-icon w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-lg hover:bg-blue-600">
+                                                <i class="fab fa-facebook-f"></i>
+                                            </a>
+                                            <a href="#"
+                                                class="social-icon w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-lg hover:bg-purple-600">
+                                                <i class="fab fa-instagram"></i>
+                                            </a>
+                                            <a href="#"
+                                                class="social-icon w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-lg hover:bg-blue-400">
+                                                <i class="fab fa-twitter"></i>
+                                            </a>
+                                            <a href="#"
+                                                class="social-icon w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-lg hover:bg-red-500">
+                                                <i class="fab fa-youtube"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-semibold text-white mb-4 font-orbitron">Products</h4>
+                                        <ul class="space-y-2">
+                                            <li><a href="#"
+                                                    class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center"><i
+                                                        class="fas fa-chevron-right text-xs mr-2 text-blue-400"></i>
+                                                    Logo Templates</a></li>
+                                            <li><a href="#"
+                                                    class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center"><i
+                                                        class="fas fa-chevron-right text-xs mr-2 text-blue-400"></i>
+                                                    Social Media Kits</a>
+                                            </li>
+                                            <li><a href="#"
+                                                    class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center"><i
+                                                        class="fas fa-chevron-right text-xs mr-2 text-blue-400"></i>
+                                                    UI/UX Templates</a>
+                                            </li>
+                                            <li><a href="#"
+                                                    class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center"><i
+                                                        class="fas fa-chevron-right text-xs mr-2 text-blue-400"></i>
+                                                    eBooks & Guides</a>
+                                            </li>
+                                            <li><a href="#"
+                                                    class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center"><i
+                                                        class="fas fa-chevron-right text-xs mr-2 text-blue-400"></i>
+                                                    Design Resources</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-semibold text-white mb-4 font-orbitron">Company</h4>
+                                        <ul class="space-y-2">
+                                            <li><a href="#"
+                                                    class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center"><i
+                                                        class="fas fa-chevron-right text-xs mr-2 text-blue-400"></i>
+                                                    About Us</a></li>
+                                            <li><a href="#"
+                                                    class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center"><i
+                                                        class="fas fa-chevron-right text-xs mr-2 text-blue-400"></i>
+                                                    Careers</a></li>
+                                            <li><a href="#"
+                                                    class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center"><i
+                                                        class="fas fa-chevron-right text-xs mr-2 text-blue-400"></i>
+                                                    Blog</a></li>
+                                            <li><a href="#"
+                                                    class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center"><i
+                                                        class="fas fa-chevron-right text-xs mr-2 text-blue-400"></i>
+                                                    Testimonials</a></li>
+                                            <li><a href="#"
+                                                    class="text-gray-400 hover:text-white transition-colors duration-300 flex items-center"><i
+                                                        class="fas fa-chevron-right text-xs mr-2 text-blue-400"></i>
+                                                    Affiliate Program</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-semibold text-white mb-4 font-orbitron">Newsletter</h4>
+                                        <p class="text-gray-400 mb-4">Subscribe to get updates on new products and
+                                            special offers.</p>
+                                        <form class="flex">
+                                            <input type="email" placeholder="Your email"
+                                                class="px-4 py-3 bg-gray-800 border border-gray-700 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white w-full">
+                                            <button
+                                                class="px-4 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-r-lg hover:opacity-90 transition-opacity duration-300">
+                                                <i class="fas fa-paper-plane"></i>
+                                            </button>
+                                        </form>
+                                        <p class="text-gray-500 text-xs mt-2">We respect your privacy. Unsubscribe at
+                                            any time.</p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                                    <p class="text-gray-400 mb-4 md:mb-0">
+                                        &copy; Code Panda. All rights reserved.
+                                    </p>
+                                    <div class="flex space-x-6">
+                                        <a href="#"
+                                            class="text-gray-400 hover:text-white transition-colors duration-300 text-sm">Privacy
+                                            Policy</a>
+                                        <a href="#"
+                                            class="text-gray-400 hover:text-white transition-colors duration-300 text-sm">Terms
+                                            of
+                                            Service</a>
+                                        <a href="#"
+                                            class="text-gray-400 hover:text-white transition-colors duration-300 text-sm">Licenses</a>
+                                        <a href="#"
+                                            class="text-gray-400 hover:text-white transition-colors duration-300 text-sm">Sitemap</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </footer>
+
+                        <script>
+                            // Scroll animations
+                            document.addEventListener('DOMContentLoaded', function () {
+                                // Initialize GSAP animations
+                                gsap.registerPlugin(ScrollTrigger);
+
+                                // Animate elements on scroll
+                                gsap.utils.toArray('.fade-in').forEach((element, i) => {
+                                    gsap.from(element, {
+                                        scrollTrigger: {
+                                            trigger: element,
+                                            start: "top 80%",
+                                            toggleActions: "play none none none"
+                                        },
+                                        opacity: 0,
+                                        y: 50,
+                                        duration: 0.8,
+                                        delay: i * 0.1
+                                    });
+                                });
+
+                                // Smooth scrolling for navigation
+                                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                                    anchor.addEventListener('click', function (e) {
+                                        e.preventDefault();
+
+                                        document.querySelector(this.getAttribute('href')).scrollIntoView({
+                                            behavior: 'smooth'
+                                        });
+                                    });
+                                });
+
+                                // Mobile menu toggle (would need additional HTML/CSS for full implementation)
+                                const mobileMenuButton = document.querySelector('.md\\:hidden button');
+                                if (mobileMenuButton) {
+                                    mobileMenuButton.addEventListener('click', function () {
+                                        // This would toggle a mobile menu
+                                        console.log('Mobile menu clicked');
+                                    });
+                                }
+
+                                // Product card hover effects
+                                const productCards = document.querySelectorAll('.product-card, .card-3d');
+                                productCards.forEach(card => {
+                                    card.addEventListener('mouseenter', function () {
+                                        gsap.to(this, {
+                                            y: -10,
+                                            rotationY: this.classList.contains('card-3d') ? 10 : 0,
+                                            rotationX: this.classList.contains('card-3d') ? 5 : 0,
+                                            boxShadow: '0 20px 30px rgba(59, 130, 246, 0.3)',
+                                            duration: 0.3
+                                        });
+                                    });
+
+                                    card.addEventListener('mouseleave', function () {
+                                        gsap.to(this, {
+                                            y: 0,
+                                            rotationY: 0,
+                                            rotationX: 0,
+                                            boxShadow: 'none',
+                                            duration: 0.3
+                                        });
+                                    });
+                                });
+
+                                // Floating animation for elements
+                                gsap.to('.floating', {
+                                    y: 20,
+                                    duration: 3,
+                                    repeat: -1,
+                                    yoyo: true,
+                                    ease: "sine.inOut"
+                                });
+
+                                // Map pin animation
+                                const mapPin = document.querySelector('.map-pin');
+                                if (mapPin) {
+                                    gsap.to(mapPin, {
+                                        scale: 1.1,
+                                        duration: 1.5,
+                                        repeat: -1,
+                                        yoyo: true,
+                                        ease: "power1.inOut"
+                                    });
+                                }
+
+                                // Gradient text animation
+                                const gradientTexts = document.querySelectorAll('.gradient-text');
+                                gradientTexts.forEach(text => {
+                                    gsap.to(text, {
+                                        'background-position': '200% 0%',
+                                        duration: 8,
+                                        repeat: -1,
+                                        ease: "none"
+                                    });
+                                });
+                            });
+
+                        </script>
+        </body>
+
+</html>
